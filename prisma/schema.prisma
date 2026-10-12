@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  favouriteCategories FavouriteCategory[]
+  reminders     Reminder[]
+  cardDesigns   CardDesign[]
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  city        String
+  startsAt    DateTime
+  price       Int
+  description String
+  imageUrl    String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  reminders   Reminder[]
+  cardDesigns CardDesign[]
+
+  @@index([isActive, startsAt])
+  @@index([category])
+  @@index([city])
+}
+
+model FavouriteCategory {
+  userId   String
+  category String
+  user     User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, category])
+}
+
+model Reminder {
+  userId    String
+  eventId   String
+  createdAt DateTime @default(now())
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([userId, eventId])
+}
+
+model CardDesign {
+  userId    String
+  eventId   String
+  theme     String
+  stickers  String // JSON array
+  updatedAt DateTime @updatedAt
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([userId, eventId])
+}
