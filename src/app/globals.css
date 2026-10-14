@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — the single source of colour, radius and shadow truth.
+ * Never hard-code a hex in a component; use these names.
+ */
+@theme {
+  /* Primary (one accent colour for everything interactive) */
+  --color-brand: #4F46E5;      /* primary       */
+  --color-brand-ink: #4338CA;  /* primary-hover */
+  --color-brand-soft: #EEF2FF; /* primary-soft  */
+
+  /* Surfaces & text */
+  --color-bg: #FAFAF9;
+  --color-surface: #FFFFFF;
+  --color-ink: #1C1917;   /* text   */
+  --color-muted: #78716C; /* muted  */
+  --color-line: #E7E5E4;  /* border */
+
+  /* Status */
+  --color-success: #16A34A;
+  --color-danger: #DC2626;
+  --color-warning: #D97706;
+
+  --font-sans: var(--font-inter);
+
+  /* Shadows: cards rest at `soft`, hover lifts to `card`/`lift`. Nothing heavier. */
+  --shadow-soft: 0 1px 2px 0 rgb(28 25 23 / 0.05);
+  --shadow-card: 0 4px 6px -1px rgb(28 25 23 / 0.08), 0 2px 4px -2px rgb(28 25 23 / 0.06);
+  --shadow-lift: 0 4px 6px -1px rgb(28 25 23 / 0.08), 0 2px 4px -2px rgb(28 25 23 / 0.06);
+}
+
+/* Defined outside @theme so it is always emitted for the .skeleton utility. */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+  }
+  ::selection {
+    background-color: rgb(79 70 229 / 0.18);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(120 113 108 / 0.35);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(120 113 108 / 0.55);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, #6366F1 0%, #4F46E5 45%, #7C3AED 100%);
+  }
+
+  .glass {
+    background-color: rgb(255 255 255 / 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+  }
+
+  .skeleton {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-line) 25%,
+      rgb(231 229 228 / 0.5) 40%,
+      var(--color-line) 55%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  /* Let an inner row scroll sideways without a visible scrollbar. */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
