@@ -64,16 +64,13 @@ function ToggleSwitch({
 
 function RowActions({ event, isPendingRow, onToggle }: { event: AdminEvent; isPendingRow: boolean; onToggle: (id: string, current: boolean) => void }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-end gap-2">
       <ToggleSwitch
         checked={event.isActive}
         disabled={isPendingRow}
         onToggle={() => onToggle(event.id, event.isActive)}
         label={event.isActive ? 'Deactivate event' : 'Activate event'}
       />
-      <span className={cn('text-sm font-medium', event.isActive ? 'text-success' : 'text-muted')}>
-        {event.isActive ? 'Active' : 'Inactive'}
-      </span>
     </div>
   );
 }
