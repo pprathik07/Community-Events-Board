@@ -97,7 +97,7 @@ click node_accountpages "https://github.com/pprathik07/community-events-board/bl
 click node_feedpage "https://github.com/pprathik07/community-events-board/blob/main/src/app/feed/page.tsx"
 click node_favpage "https://github.com/pprathik07/community-events-board/blob/main/src/app/favourites/page.tsx"
 click node_designer "https://github.com/pprathik07/community-events-board/blob/main/src/components/card-designer.tsx"
-click node_adminpages "https://github.com/pprathik07/community-events-board/blob/main/src/app/admin/(protected)/events/new/page.tsx"
+click node_adminpages "https://github.com/pprathik07/community-events-board/blob/main/src/app/admin/%28protected%29/events/new/page.tsx"
 click node_eventsapi "https://github.com/pprathik07/community-events-board/blob/main/src/app/api/events/route.ts"
 click node_detailapi "https://github.com/pprathik07/community-events-board/blob/main/src/app/api/events/%5Bid%5D/route.ts"
 click node_filtersapi "https://github.com/pprathik07/community-events-board/blob/main/src/app/api/events/filters/route.ts"
