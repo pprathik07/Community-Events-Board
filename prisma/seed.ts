@@ -12,6 +12,14 @@ function istDate(daysOffset: number, hours: number, minutes: number = 0): Date {
   return new Date(base.getTime() - IST_OFFSET);
 }
 
+/** Unsplash CDN photo, cropped to the event card's 16:9 ratio. */
+const unsplash = (photoId: string) =>
+  `https://images.unsplash.com/photo-${photoId}?auto=format&fit=crop&w=800&h=450&q=80`;
+
+/** Wikimedia Commons photo (freely licensed), served at a card-friendly width. */
+const commons = (file: string) =>
+  `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file.replace(/ /g, '_'))}?width=1280`;
+
 const events = [
   {
     title: 'Sunday Unplugged Music Night',
@@ -20,7 +28,7 @@ const events = [
     startsAt: istDate(3, 18, 30),
     price: 499,
     description: 'An intimate acoustic evening with local indie artists performing original songs and covers. Bring your friends for a relaxed night of great music.',
-    imageUrl: 'https://picsum.photos/seed/sunday-unplugged/800/450',
+    imageUrl: unsplash('1590425032427-78a5e0e6e7d5'),
     isActive: true,
   },
   {
@@ -30,7 +38,7 @@ const events = [
     startsAt: istDate(9, 19, 0),
     price: 750,
     description: 'Featuring three up-and-coming indie bands from across South India. High energy, fresh sounds, and a night to remember.',
-    imageUrl: 'https://picsum.photos/seed/indie-night/800/450',
+    imageUrl: unsplash('1755719888682-86b38b56de27'),
     isActive: true,
   },
   {
@@ -40,7 +48,7 @@ const events = [
     startsAt: istDate(6, 18, 0),
     price: 1500,
     description: 'A unique blend of traditional Carnatic music with contemporary jazz and electronic elements. Featuring renowned vocalist and instrumentalists.',
-    imageUrl: 'https://picsum.photos/seed/carnatic-fusion/800/450',
+    imageUrl: unsplash('1767216498325-4ed83f6edcd8'),
     isActive: true,
   },
   {
@@ -50,7 +58,7 @@ const events = [
     startsAt: istDate(5, 10, 0),
     price: 1200,
     description: 'Learn the basics of hand-building and wheel throwing. Create your own ceramic pieces to take home. All materials provided.',
-    imageUrl: 'https://picsum.photos/seed/pottery-beginners/800/450',
+    imageUrl: unsplash('1767476106330-4e5a0b4dcf94'),
     isActive: true,
   },
   {
@@ -60,7 +68,7 @@ const events = [
     startsAt: istDate(12, 9, 0),
     price: 150000,
     description: 'Intensive 3-day masterclass with award-winning photographers. Covers composition, lighting, post-processing, and portfolio review. Includes accommodation and meals.',
-    imageUrl: 'https://picsum.photos/seed/photo-masterclass/800/450',
+    imageUrl: unsplash('1497217305029-066f2870276b'),
     isActive: true,
   },
   {
@@ -70,7 +78,7 @@ const events = [
     startsAt: istDate(8, 17, 0),
     price: 0,
     description: 'A celebration of Coimbatore street food! 20+ stalls featuring local favourites: kothu parotta, jigarthanda, sundal, and more. Free entry, pay for food.',
-    imageUrl: 'https://picsum.photos/seed/street-food-fair/800/450',
+    imageUrl: commons('DZ6 2872 Night market cooks prepare stir-fried dishes and fresh eggs at a bustling street food stall in Klet Kaeo Sattahip.jpg'),
     isActive: true,
   },
   {
@@ -80,7 +88,7 @@ const events = [
     startsAt: istDate(14, 12, 0),
     price: 299,
     description: 'Taste 10+ varieties of authentic Hyderabadi biryani from the city\'s best restaurants. Includes vegetarian options. Live cooking demos.',
-    imageUrl: 'https://picsum.photos/seed/biryani-festival/800/450',
+    imageUrl: commons('Chicken Hyderabadi Biryani.JPG'),
     isActive: true,
   },
   {
@@ -90,7 +98,7 @@ const events = [
     startsAt: istDate(7, 6, 0),
     price: 350,
     description: 'Community 5K run at sunrise through the scenic VOC Park route. Open to all fitness levels. T-shirt and refreshments included.',
-    imageUrl: 'https://picsum.photos/seed/sunrise-run/800/450',
+    imageUrl: unsplash('1550252137-661499e28f4a'),
     isActive: true,
   },
   {
@@ -100,7 +108,7 @@ const events = [
     startsAt: istDate(2, 16, 0),
     price: 0,
     description: 'Interactive storytelling session for ages 4-10. Professional storytellers bring folktales and modern stories to life with puppets and music.',
-    imageUrl: 'https://picsum.photos/seed/kids-storytelling/800/450',
+    imageUrl: commons('An old man (grandfather) narrating a story to a group of kids (grandchildren) - a common scene in traditional Meitei society since ancient times till modern era.jpg'),
     isActive: true,
   },
   {
@@ -110,7 +118,7 @@ const events = [
     startsAt: istDate(-10, 19, 0),
     price: 800,
     description: 'Jazz standards in the historic Fort Kochi setting. International and local jazz musicians. Intimate venue, limited seating.',
-    imageUrl: 'https://picsum.photos/seed/old-town-jazz/800/450',
+    imageUrl: unsplash('1553203659-551ca1d4d7c3'),
     isActive: true,
   },
   {
@@ -120,7 +128,7 @@ const events = [
     startsAt: istDate(-5, 10, 0),
     price: 400,
     description: 'Learn traditional and contemporary rangoli designs for Diwali. Materials provided. Suitable for all ages and skill levels.',
-    imageUrl: 'https://picsum.photos/seed/diwali-rangoli/800/450',
+    imageUrl: commons('Diwali Diyas.jpg'),
     isActive: true,
   },
   {
@@ -130,7 +138,7 @@ const events = [
     startsAt: istDate(-3, 11, 0),
     price: 250,
     description: 'Guided painting session for children ages 5-12. Theme: "My Favourite Festival". All art supplies included. Take home your masterpiece.',
-    imageUrl: 'https://picsum.photos/seed/kids-painting/800/450',
+    imageUrl: commons('The Secretary, Ministry of Information and Broadcasting, Shri Bimal Julka presented the prizes to the children who participated in painting competition (1).jpg'),
     isActive: true,
   },
   {
@@ -140,7 +148,7 @@ const events = [
     startsAt: istDate(6, 19, 0),
     price: 200,
     description: 'Open stage for singers, poets, comedians, and performers of all kinds. Sign up on arrival. Supportive audience, great vibes.',
-    imageUrl: 'https://picsum.photos/seed/open-mic/800/450',
+    imageUrl: unsplash('1547812374-17741c8f6365'),
     isActive: false,
   },
   {
@@ -150,7 +158,7 @@ const events = [
     startsAt: istDate(10, 19, 0),
     price: 350,
     description: 'Exclusive rooftop dining with a rotating chef menu. Craft cocktails and city views. Limited to 50 guests per evening.',
-    imageUrl: 'https://picsum.photos/seed/rooftop-popup/800/450',
+    imageUrl: commons('DFC 5212 A cozy rooftop table lit by a warm lamp overlooking Pattayas night lights.jpg'),
     isActive: false,
   },
   {
@@ -160,7 +168,7 @@ const events = [
     startsAt: istDate(16, 9, 0),
     price: 2000,
     description: 'Amateur cricket tournament over 4 weekends. Teams of 11. Leather ball, proper pitch. Prizes for winners and runners-up.',
-    imageUrl: 'https://picsum.photos/seed/cricket-league/800/450',
+    imageUrl: commons('Cricket match at Wikimania 2014 - batsman running 01.jpg'),
     isActive: false,
   },
 ];
@@ -218,8 +226,12 @@ async function main() {
     // Match on title, not id: older seed runs inserted rows with random cuid
     // ids, so keying on `id: event.title` created duplicates every run.
     const existing = await prisma.event.findFirst({ where: { title: event.title } });
+    // Refresh the image on rows created by older seed runs (which used
+    // placeholder photos), but leave every other field — including the admin's
+    // active/inactive toggle — untouched.
     const row = existing
-      ?? (await prisma.event.create({ data: { id: event.title, ...event } }));
+      ? await prisma.event.update({ where: { id: existing.id }, data: { imageUrl: event.imageUrl } })
+      : await prisma.event.create({ data: { id: event.title, ...event } });
     eventIds.set(event.title, row.id);
   }
 
