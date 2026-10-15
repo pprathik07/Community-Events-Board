@@ -132,7 +132,8 @@ while signed out redirects to `/admin/login?next=…`.
 
 ### Admin API
 
-All admin API routes require an admin session; otherwise they return **403**.
+All admin API routes require an admin session. A request with **no token** returns
+**401** (`UNAUTHENTICATED`); a signed-in **non-admin** returns **403** (`FORBIDDEN`).
 
 | Method | Endpoint | Purpose |
 |---|---|---|
@@ -143,8 +144,9 @@ All admin API routes require an admin session; otherwise they return **403**.
 ### How admin protection works
 
 - `src/proxy.ts` (Next middleware) guards `/admin/*` and `/api/admin/*`:
-  - pages → redirect to `/admin/login`
-  - APIs → `403 {"error":{"code":"FORBIDDEN"}}`
+  - pages → redirect to `/admin/login?next=…`
+  - APIs → `401` when there is no token, `403` when the token is not an admin
+    (matches the authorization matrix in `dev-docs/guardrails.md` §3)
 - `src/app/admin/(protected)/layout.tsx` re-checks the session server-side.
 - Route handlers call `requireAdminSession()` from `src/lib/session.ts`.
 - Admin tokens carry `sub: "admin"` and `role: "admin"`; there is no User row.
@@ -192,6 +194,26 @@ Errors use a consistent shape:
 ```json
 { "error": { "code": "VALIDATION", "message": "…", "fields": { "title": "…" } } }
 ```
+
+---
+
+## Filter query & indexes
+
+The public events list runs one query: `isActive = true` **and** `startsAt > now`,
+then optionally narrows by `category`, `city` and `q`, ordered by `startsAt`
+ascending. Those columns are indexed in `prisma/schema.prisma`:
+
+| Index | Columns | Serves |
+|---|---|---|
+| `Event_isActive_startsAt_idx` | `(isActive, startsAt)` | The default "active & upcoming, nearest first" filter **and** sort |
+| `Event_category_idx` | `(category)` | The category filter |
+| `Event_city_idx` | `(city)` | The city filter |
+
+The composite `(isActive, startsAt)` index matters most: SQLite can seek straight
+to the active, not-yet-started rows already in `startsAt` order, so the common
+list query avoids a full table scan and a separate sort. `category` and `city`
+are low-selectivity on their own, but each one shrinks the candidate set before
+the sort.
 
 ---
 
@@ -278,3 +300,28 @@ notice from the dev overlay; it does not affect behaviour.
 - Prices are shown in ₹ (INR) with Indian digit grouping; dates are IST.
 - Security headers (`X-Content-Type-Options`, `Referrer-Policy`,
   `X-Frame-Options`) are set in `next.config.ts`.
+
+---
+
+## What is left / not done
+
+- **Reminders are a saved flag only** — no email or push delivery (out of scope).
+- **No edit/delete event, admin user management, image upload or password reset**
+  — out of scope by design (`OVERVIEW.md` §1).
+- **Seed images** point at Unsplash and Wikimedia Commons URLs. If a host changes
+  or removes an image, the card falls back to the branded gradient placeholder,
+  so the page still looks intentional.
+- **Offline / very slow networks** are only covered by the loading skeletons.
+
+---
+
+## Where AI tools were used
+
+This app was built with an AI coding agent (OpenCode). AI helped scaffold the
+Next.js App Router structure, the Prisma schema and services, the API route
+handlers and the Vitest suite, and the Tailwind v4 UI.
+
+AI output was reviewed against `dev-docs/*`. The security-critical parts — auth,
+the authorization matrix and its tests (`tests/api/authz-matrix.test.ts`) and the
+single `publicEventWhere` visibility helper — were checked by hand and are
+covered by the test suite.
