@@ -12,7 +12,7 @@ import { LoadingSkeleton, ErrorState, EventEmptyState } from '@/components/state
 
 function PageHeader() {
   return (
-    <header className="space-y-2">
+    <header className="rounded-2xl bg-linear-to-b from-brand-soft to-transparent px-5 py-6 sm:px-8 sm:py-8 space-y-2">
       <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">
         Community events near you
       </h1>
@@ -92,7 +92,10 @@ function EventsPageContent() {
         <EventEmptyState hasFilters={hasFilters} onClearFilters={handleClearFilters} />
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div
+            key={`${category ?? 'all'}|${city ?? 'all'}|${q ?? ''}|${data?.page ?? 1}`}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 animate-fade-in"
+          >
             {data?.items.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

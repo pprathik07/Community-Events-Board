@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Bell, BellRing, Check } from 'lucide-react';
-import { memo, useCallback, useState, useRef } from 'react';
+import { memo, useCallback, useEffect, useState, useRef } from 'react';
 
 interface RemindButtonProps {
   eventId: string;
@@ -23,6 +23,20 @@ export const RemindButton = memo(function RemindButton({ eventId, initiallyRemin
   const [isReminded, setIsReminded] = useState(initiallyReminded);
   const [isPending, setIsPending] = useState(false);
   const pendingRef = useRef(false);
+  const prevRemindedRef = useRef(initiallyReminded);
+  const [bellPop, setBellPop] = useState(false);
+
+  // Pop the bell only when the reminder flips on — not on first load, and not
+  // when an error rolls the state back.
+  useEffect(() => {
+    if (isReminded && !prevRemindedRef.current) {
+      setBellPop(true);
+      const timer = setTimeout(() => setBellPop(false), 220);
+      prevRemindedRef.current = isReminded;
+      return () => clearTimeout(timer);
+    }
+    prevRemindedRef.current = isReminded;
+  }, [isReminded]);
 
   const mutation = useMutation({
     mutationFn: (next: boolean) => (next ? api.events.reminder.set(eventId) : api.events.reminder.unset(eventId)),
@@ -122,7 +136,7 @@ export const RemindButton = memo(function RemindButton({ eventId, initiallyRemin
     >
       {isReminded ? (
         <>
-          <BellRing className="w-4 h-4" />
+          <BellRing className={cn('w-4 h-4', bellPop && 'animate-bell-pop')} />
           <span>Reminder set</span>
           <Check className="w-3.5 h-3.5" />
         </>

@@ -82,7 +82,7 @@ export function FilterBar({ cities }: FilterBarProps) {
             type="button"
             onClick={() => setSearch('')}
             aria-label="Clear search"
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-muted hover:text-ink hover:bg-brand-soft transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-muted hover:text-ink hover:bg-brand-soft transition-colors active:scale-95"
           >
             <X className="w-4 h-4" />
           </button>
@@ -95,7 +95,7 @@ export function FilterBar({ cities }: FilterBarProps) {
           onClick={() => setSelectedCategory('all')}
           aria-pressed={selectedCategory === 'all'}
           className={cn(
-            'h-11 px-4 rounded-full text-sm font-medium shrink-0 whitespace-nowrap transition-colors',
+            'h-11 px-4 rounded-full text-sm font-medium shrink-0 whitespace-nowrap transition-colors active:scale-95',
             selectedCategory === 'all'
               ? 'bg-brand text-white'
               : 'bg-surface border border-line text-ink hover:bg-brand-soft'
@@ -113,7 +113,7 @@ export function FilterBar({ cities }: FilterBarProps) {
               aria-pressed={active}
               style={active ? categoryStyle(cat) : undefined}
               className={cn(
-                'h-11 px-4 rounded-full text-sm font-medium shrink-0 whitespace-nowrap border transition-colors',
+                'h-11 px-4 rounded-full text-sm font-medium shrink-0 whitespace-nowrap border transition-colors active:scale-95',
                 active
                   ? 'border-transparent ring-2 ring-brand/30'
                   : 'bg-surface border-line text-ink hover:bg-brand-soft'

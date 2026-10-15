@@ -36,6 +36,19 @@
   to { background-position: 200% 0; }
 }
 
+/* Remind-me bell: a short pop when the reminder flips to "Reminder set". */
+@keyframes bell-pop {
+  0% { transform: scale(0.6); }
+  55% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Events grid: fades in when the filters change. */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
@@ -92,6 +105,22 @@
     );
     background-size: 200% 100%;
     animation: shimmer 1.6s linear infinite;
+  }
+
+  .animate-bell-pop {
+    animation: bell-pop 0.2s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  /* Respect users who ask for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-bell-pop,
+    .animate-fade-in {
+      animation: none;
+    }
   }
 
   /* Let an inner row scroll sideways without a visible scrollbar. */
